@@ -47,7 +47,7 @@ const newYear = new CountdownTimer ({
 
 const tomorrow = new CountdownTimer ({
     selector: '#timer-2',
-    targetDate: new Date('Oct 29, 2020'),
+    targetDate: new Date('Oct 30, 2020'),
   })  
     tomorrow.start()
     console.log(tomorrow);
