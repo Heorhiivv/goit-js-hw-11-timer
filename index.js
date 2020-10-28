@@ -1,49 +1,57 @@
-const countDays = document.querySelector('span[data-value="days"]');
-const countHours = document.querySelector('span[data-value="hours"]');
-const countMins = document.querySelector('span[data-value="mins"]');
-const countSecs = document.querySelector('span[data-value="secs"]');
-const timerId = document.querySelector('.timer');
+class CountdownTimer {
+  constructor({selector, targetDate}) {
+    this.selector = selector;
+    this.targetDate = targetDate;
+    this.refs = this.getRefs()
+  }   
 
-timerId.insertAdjacentHTML('beforebegin',`<h1 style = "color: red" >Santa Claus Is Coming To Town In...</h1>`)
-
-// ...................................
-//  НЕ ПОНЯЛ ЧТО С ЭТИМ ДЕЛАТЬ!
-
-// class CountdownTimer {
-//   constructor({selector, targetDate}) {
-//     this.selector = selector;
-//     this.targetDate = targetDate;
-//   }
-// }
-// ...................................
-
-const timer = ({
-  selector: '#timer-1',
-  targetDate: new Date('Jan 1, 2021'),
-  
   start() {
+
     setInterval(() => {
       const currentTime = Date.now();
       const countDown = this.targetDate - currentTime
-      updateClockface(countDown)
-    }, 1000);
-  },  
-});
-timer.start();
+      this.updateClockface(countDown)
+      }, 1000)  
+    }; 
+    
+  getRefs () {
+      const selector = document.querySelector(this.selector);
+      const countDays = selector.querySelector('span[data-value="days"]');
+      const countHours = selector.querySelector('span[data-value="hours"]');
+      const countMins = selector.querySelector('span[data-value="mins"]');
+      const countSecs = selector.querySelector('span[data-value="secs"]');
+      return {countDays, countHours, countMins, countSecs}
+    };
 
-function updateClockface(time) {
+  updateClockface (time) {
+      const {countDays, countHours, countMins, countSecs} = this.refs;
+      countDays.textContent = this.pad(Math.floor(time / (1000 * 60 * 60 * 24)));
+      countHours.textContent = this.pad(Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
+      countMins.textContent = this.pad(Math.floor((time % (1000 * 60 * 60)) / (1000 * 60)));
+      countSecs.textContent = this.pad(Math.floor((time % (1000 * 60)) / 1000));
+    };
 
-  const days = pad(Math.floor(time / (1000 * 60 * 60 * 24)));
-  const hours = pad(Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
-  const minutes = pad(Math.floor((time % (1000 * 60 * 60)) / (1000 * 60)));
-  const seconds = pad(Math.floor((time % (1000 * 60)) / 1000));
+  pad (value) {
+      return String(value).padStart(2, '0');
+    };
+  }; 
+
+
+const newYear = new CountdownTimer ({
+    selector: '#timer-1',
+    targetDate: new Date('Jan 1, 2021'),
+})    
+    newYear.start()
+    console.log(newYear);
+
+
+const tomorrow = new CountdownTimer ({
+    selector: '#timer-2',
+    targetDate: new Date('Oct 29, 2020'),
+  })  
+    tomorrow.start()
+    console.log(tomorrow);
+
+
+
  
-  countDays.textContent = `${days}:`;
-  countHours.textContent = `${hours}:`;
-  countMins.textContent = `${minutes}:`;
-  countSecs.textContent = `${seconds}`;
-  }
-  
-  function pad(value) {
-    return String(value).padStart(2, '0');
-  };

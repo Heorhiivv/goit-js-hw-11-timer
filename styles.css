@@ -12,9 +12,8 @@
 }
 
 .field {
-  display: flex;
-  flex-wrap: wrap;
-  width: 100px;
+  display: block;
+  width: 70px;
   margin-left: 4px;
   margin-right: 4px;
   text-transform: uppercase;
